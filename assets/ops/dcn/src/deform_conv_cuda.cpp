@@ -295,7 +295,7 @@ int deform_conv_backward_input_cuda(at::Tensor input, at::Tensor offset,
   long outputHeight =
       (inputHeight + 2 * padH - (dilationH * (kH - 1) + 1)) / dH + 1;
 
-  AT_CHECK((offset.size(0) == batchSize), 3, "invalid batch size of offset");
+  TORCH_CHECK((offset.size(0) == batchSize), 3, "invalid batch size of offset");
   gradInput = gradInput.view({batchSize, nInputPlane, inputHeight, inputWidth});
   columns = at::zeros(
       {nInputPlane * kW * kH, im2col_step * outputHeight * outputWidth},
@@ -410,7 +410,7 @@ int deform_conv_backward_parameters_cuda(
   long outputHeight =
       (inputHeight + 2 * padH - (dilationH * (kH - 1) + 1)) / dH + 1;
 
-  AT_CHECK((offset.size(0) == batchSize), "invalid batch size of offset");
+  TORCH_CHECK((offset.size(0) == batchSize), "invalid batch size of offset");
 
   columns = at::zeros(
       {nInputPlane * kW * kH, im2col_step * outputHeight * outputWidth},
@@ -490,8 +490,8 @@ void modulated_deform_conv_cuda_forward(
     const int pad_h, const int pad_w, const int dilation_h,
     const int dilation_w, const int group, const int deformable_group,
     const bool with_bias) {
-  AT_CHECK(input.is_contiguous(), "input tensor has to be contiguous");
-  AT_CHECK(weight.is_contiguous(), "weight tensor has to be contiguous");
+  TORCH_CHECK(input.is_contiguous(), "input tensor has to be contiguous");
+  TORCH_CHECK(weight.is_contiguous(), "weight tensor has to be contiguous");
 
   const int batch = input.size(0);
   const int channels = input.size(1);
@@ -571,8 +571,8 @@ void modulated_deform_conv_cuda_backward(
     int kernel_h, int kernel_w, int stride_h, int stride_w, int pad_h,
     int pad_w, int dilation_h, int dilation_w, int group, int deformable_group,
     const bool with_bias) {
-  AT_CHECK(input.is_contiguous(), "input tensor has to be contiguous");
-  AT_CHECK(weight.is_contiguous(), "weight tensor has to be contiguous");
+  TORCH_CHECK(input.is_contiguous(), "input tensor has to be contiguous");
+  TORCH_CHECK(weight.is_contiguous(), "weight tensor has to be contiguous");
 
   const int batch = input.size(0);
   const int channels = input.size(1);
